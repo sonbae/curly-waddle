@@ -1,6 +1,5 @@
 from typing import List, Tuple
 from ultralytics import YOLO
-from ultralytics.engine.results import Results
 from requests import Session
 from io import BytesIO
 from PIL import Image, ImageEnhance
