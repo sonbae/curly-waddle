@@ -75,9 +75,6 @@ def transform_image(image: Image, setting: Tuple) -> Image:
     sharpened_image = ImageEnhance.Sharpness(contrasted_image).enhance(float(setting[2]))
     return sharpened_image
 
-def run_model_against_settings(model: YOLO, image: Image, settings: List[Tuple]):
-    return list(map(lambda brightness, contrast, sharpness: get_num_filtered_detections(model=model, image=image)))
-
 def monitor_webcam(collections):
     logging.info("Monitoring webcam...")
 
@@ -93,7 +90,7 @@ def monitor_webcam(collections):
         document = dict()
         logging.info(f"Starting loop at {start_process_time}...")
 
-        if top_of_the_hour > 0 and top_of_the_hour < 24:
+        if top_of_the_hour > 7 and top_of_the_hour < 12:
             image_bytesio = get_webcam_image(session=session)
             image = Image.open(image_bytesio)
             document["original_image"] = image_bytesio.getvalue()
@@ -127,7 +124,7 @@ def monitor_webcam(collections):
         else:
             logging.info("Outside of hours, skipping...")
 
-        logging.info("Sleeping for {}...".format(SLEEP))
+        logging.info("Sleeping for {} seconds...".format(SLEEP))
         time.sleep(SLEEP)
 
 def main():
