@@ -1,4 +1,3 @@
-from functools import reduce
 from typing import List, Tuple
 from ultralytics import YOLO
 from requests import Session
