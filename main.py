@@ -58,12 +58,12 @@ def find_optimal_settings(model: YOLO, image: Image, save_to_file: str = "") -> 
 
                 num_detections_new = get_num_filtered_detections(model=model, image=sharpened_image)
 
-                if num_detections_new > num_detections_original: settings_map[num_detections_new].append((round_float(brightness), round_float(contrast), round_float(sharp)))
+                if num_detections_new >= num_detections_original: settings_map[num_detections_new].append((round_float(brightness), round_float(contrast), round_float(sharp)))
 
     logging.info(settings_map)
 
     # handle the case where no detections are found
-    return settings_map(max(settings_map))
+    return settings_map[max(settings_map)]
 
 def get_database():
     client = MongoClient(CONNECTION_STRING)
@@ -90,7 +90,7 @@ def monitor_webcam(collections):
         document = dict()
         logging.info(f"Starting loop at {start_process_time}...")
 
-        if top_of_the_hour > 13 and top_of_the_hour < 18:
+        if top_of_the_hour > 14 and top_of_the_hour < 17:
             image_bytesio = get_webcam_image(session=session)
             image = Image.open(image_bytesio)
             document["original_image"] = image_bytesio.getvalue()
